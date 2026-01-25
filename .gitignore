@@ -1,0 +1,51 @@
+### Maven ###
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+### Build (Gradle / outros) ###
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Spring Boot ###
+HELP.md
+logs/
+*.log
+
+### Environment / Secrets ###
+.env
+.env.*
+application-local.yml
+application-dev.yml
+application-prod.yml
+application-test.yml
+docker-compose.override.yml
+
+### Docker ###
+postgres_data/
+
+### IDEs ###
+## IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+## VS Code
+.vscode/
+
+## Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### JVM ###
+hs_err_pid*
