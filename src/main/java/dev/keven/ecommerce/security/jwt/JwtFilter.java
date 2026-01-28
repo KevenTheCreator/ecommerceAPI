@@ -23,13 +23,6 @@ public class JwtFilter extends OncePerRequestFilter {
         this.provider = provider;
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        String path = request.getRequestURI();
-//        boolean skip = path.startsWith("/api/v1/auth/");
-//        return skip;
-//    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
