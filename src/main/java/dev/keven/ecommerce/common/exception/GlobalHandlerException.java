@@ -37,4 +37,16 @@ public class GlobalHandlerException {
         ErrorResponse response = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(response.status).body(response);
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException e) {
+        ErrorResponse response = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(response.status).body(response);
+    }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleProductAlreadyExists(ProductAlreadyExistsException e) {
+        ErrorResponse response = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(response.status).body(response);
+    }
 }
