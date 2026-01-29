@@ -2,7 +2,9 @@ package dev.keven.ecommerce.modules.user.presentation.mapper;
 
 import dev.keven.ecommerce.modules.user.domain.User;
 import dev.keven.ecommerce.modules.user.infrastructure.persistence.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserEntityMapper {
 
     public UserEntityMapper() {}
@@ -24,7 +26,8 @@ public class UserEntityMapper {
                 entity.getFirstName(),
                 entity.getLastName(),
                 entity.getEmail(),
-                entity.getPassword()
+                entity.getPassword(),
+                entity.getRoles()
         );
     }
 }
