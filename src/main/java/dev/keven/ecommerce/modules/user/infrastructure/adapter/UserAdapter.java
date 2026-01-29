@@ -14,8 +14,11 @@ public class UserAdapter implements UserGateway {
 
     private final UserRepository userRepository;
 
-    public UserAdapter(UserRepository userRepository) {
+    private final UserEntityMapper entityMapper;
+
+    public UserAdapter(UserRepository userRepository, UserEntityMapper entityMapper) {
         this.userRepository = userRepository;
+        this.entityMapper = entityMapper;
     }
 
     @Override
@@ -25,11 +28,7 @@ public class UserAdapter implements UserGateway {
 
     @Override
     public User save(User user) {
-
-        UserEntity userEntity = UserEntityMapper.toEntity(user);
-
-        UserEntity saved = userRepository.save(userEntity);
-
-        return UserEntityMapper.toDomain(saved);
+        UserEntity entity = userRepository.save(entityMapper.toEntity(user));
+        return UserEntityMapper.toDomain(entity);
     }
 }
