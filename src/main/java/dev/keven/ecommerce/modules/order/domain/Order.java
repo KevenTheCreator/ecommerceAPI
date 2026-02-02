@@ -62,6 +62,7 @@ public class Order {
 
     public void cancel() {
         if (status == OrderStatus.CANCELED) throw new OrderInvalidStatusException("order is already canceled");
+        this.status = OrderStatus.CANCELED;
     }
 
     private void recalculateTotal() {
@@ -83,6 +84,31 @@ public class Order {
                 .orElse(null);
     }
 
+    public void validateIfCanBeDeleted() {
+        if (this.status != OrderStatus.CREATED) {
+            throw new OrderInvalidStatusException("only orders with status CREATED can be deleted");
+        }
+    }
+
+
+    public static Order rebuild(
+            Long id,
+            Long userId,
+            OrderStatus status,
+            BigDecimal totalPrice,
+            List<OrderItem> items,
+            LocalDateTime createdAt
+    ) {
+        Order order = new Order(userId);
+        order.id = id;
+        order.status = status;
+        order.totalPrice = totalPrice;
+        order.items = new ArrayList<>(items);
+        order.createdAt = createdAt;
+
+        return order;
+    }
+
     public Long getId() {
         return id;
     }
@@ -99,11 +125,13 @@ public class Order {
         return totalPrice;
     }
 
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public List<OrderItem> getItems() {
+        return List.copyOf(items);
+    }
+
+    List<OrderItem> getItemInternal() { return items; }
 }
