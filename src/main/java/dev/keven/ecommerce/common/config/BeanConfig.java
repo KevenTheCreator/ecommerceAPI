@@ -74,8 +74,8 @@ public class BeanConfig {
     }
 
     @Bean
-    AddItemToOrderUseCase addItemToOrderUseCase(OrderGateway orderGateway) {
-        return new AddItemToOrderUseCase(orderGateway);
+    AddItemToOrderUseCase addItemToOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new AddItemToOrderUseCase(orderGateway, productGateway);
     }
 
     @Bean
@@ -99,8 +99,8 @@ public class BeanConfig {
     }
 
     @Bean
-    RemoveItemFromOrderUseCase removeItemFromOrderUseCase(OrderGateway orderGateway) {
-        return new RemoveItemFromOrderUseCase(orderGateway);
+    RemoveItemFromOrderUseCase removeItemFromOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new RemoveItemFromOrderUseCase(orderGateway, productGateway);
     }
 
     @Bean
