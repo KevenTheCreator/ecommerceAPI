@@ -46,4 +46,21 @@ public record OrderResponseMapper() {
                 result.totalPrice()
         );
     }
+
+    public static GetOrderResponse toResponse(GetOrderResult result) {
+        return new GetOrderResponse(
+                result.orderId(),
+                result.userId(),
+                result.status(),
+                result.totalPrice(),
+                result.items().stream()
+                        .map(i -> new GetOrderResponse.OrderItemResponse(
+                                i.productId(),
+                                i.quantity(),
+                                i.price(),
+                                i.subtotal()
+                        ))
+                        .toList()
+        );
+    }
 }

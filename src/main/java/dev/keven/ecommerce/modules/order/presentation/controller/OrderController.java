@@ -22,14 +22,16 @@ public class OrderController {
     private final CreateOrderUseCase createOrderUseCase;
     private final DeleteOrderUseCase deleteOrderUseCase;
     private final RemoveItemFromOrderUseCase removeItemFromOrderUseCase;
+    private final GetOrderByIdUseCase getOrderByIdUseCase;
 
-    public OrderController(AddItemToOrderUseCase addItemToOrderUseCase, CancelOrderUseCase cancelOrderUseCase, ConfirmOrderUseCase confirmOrderUseCase, CreateOrderUseCase createOrderUseCase, DeleteOrderUseCase deleteOrderUseCase, RemoveItemFromOrderUseCase removeItemFromOrderUseCase) {
+    public OrderController(AddItemToOrderUseCase addItemToOrderUseCase, CancelOrderUseCase cancelOrderUseCase, ConfirmOrderUseCase confirmOrderUseCase, CreateOrderUseCase createOrderUseCase, DeleteOrderUseCase deleteOrderUseCase, RemoveItemFromOrderUseCase removeItemFromOrderUseCase, GetOrderByIdUseCase getOrderByIdUseCase) {
         this.addItemToOrderUseCase = addItemToOrderUseCase;
         this.cancelOrderUseCase = cancelOrderUseCase;
         this.confirmOrderUseCase = confirmOrderUseCase;
         this.createOrderUseCase = createOrderUseCase;
         this.deleteOrderUseCase = deleteOrderUseCase;
         this.removeItemFromOrderUseCase = removeItemFromOrderUseCase;
+        this.getOrderByIdUseCase = getOrderByIdUseCase;
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -90,5 +92,15 @@ public class OrderController {
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         deleteOrderUseCase.execute(new DeleteOrderCommand(id));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<GetOrderResponse> getOrderById(@PathVariable Long id) {
+        var result = getOrderByIdUseCase.execute(
+                new GetOrderByIdCommand(id)
+        );
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(OrderResponseMapper.toResponse(result));
     }
 }
