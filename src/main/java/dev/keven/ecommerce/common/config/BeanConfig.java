@@ -104,6 +104,11 @@ public class BeanConfig {
     }
 
     @Bean
+    GetOrderByIdUseCase getOrderByIdUseCase(OrderGateway orderGateway) {
+        return new GetOrderByIdUseCase(orderGateway);
+    }
+
+    @Bean
     OrderGateway orderGateway(OrderRepository repository, OrderEntityMapper entityMapper) {
         return new OrderAdapter(repository, entityMapper);
     }
