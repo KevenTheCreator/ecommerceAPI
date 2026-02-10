@@ -22,7 +22,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.roles = roles != null ? roles : new HashSet<>();
     }
 
     public Long getId() {
@@ -70,6 +70,6 @@ public class User {
     }
 
     public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
+        this.roles = roles != null ? roles : new HashSet<>();
     }
 }
