@@ -16,4 +16,6 @@ public class AuthService {
     public String generateToken(User user) {
         return JwtProvider.generateToken(user);
     }
+
+    public String refreshToken(User user) { return JwtProvider.generateRefreshToken(user); }
 }
