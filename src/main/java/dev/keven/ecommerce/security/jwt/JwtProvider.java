@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 @Component
@@ -41,7 +39,7 @@ public class JwtProvider {
     public String generateToken(User user) {
         try {
             return JWT.create()
-                    .withIssuer("Admin")
+                    .withIssuer("Access")
                     .withIssuedAt(Date.from(Instant.now()))
                     .withSubject(user.getEmail())
                     .withClaim("roles", user.getRoles().stream().map(Enum::name).toList())
@@ -55,7 +53,7 @@ public class JwtProvider {
     public DecodedJWT verifyToken(String token) {
         try {
             return JWT.require(algorithm)
-                    .withIssuer("Admin")
+                    .withIssuer("Access")
                     .build()
                     .verify(token);
         } catch (JWTVerificationException exception) {
@@ -63,11 +61,33 @@ public class JwtProvider {
         }
     }
 
+    public String generateRefreshToken(User user) {
+        try {
+            return JWT.create()
+                    .withIssuer("Refresh")
+                    .withIssuedAt(new Date())
+                    .withSubject(user.getEmail())
+                    .withExpiresAt(Date.from(getRefreshTokenExpiration()))
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new TokenGenerationException("Error creating refresh token");
+        }
+    }
+
+    public DecodedJWT verifyRefreshToken(String token) {
+        try {
+            return JWT.require(algorithm)
+                    .withIssuer("Refresh")
+                    .build()
+                    .verify(token);
+        } catch (JWTVerificationException exception) {
+            throw new TokenValidationException("Invalid refresh token");
+        }
+    }
+
     private Instant getAccessTokenExpiration() {
         return Instant.now().plus(Duration.ofHours(tokenExpiration));
     }
 
-    private Instant getRefreshTokenExpiration() {
-        return Instant.now().plus(Duration.ofHours(refreshTokenExpiration));
-    }
+    private Instant getRefreshTokenExpiration() { return Instant.now().plus(Duration.ofHours(refreshTokenExpiration)); }
 }
