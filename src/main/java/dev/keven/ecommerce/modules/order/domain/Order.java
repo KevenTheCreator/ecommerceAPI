@@ -39,6 +39,10 @@ public class Order {
     public void addItem(Long productId, int quantity, BigDecimal price) {
         ensureEditable();
 
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("quantity must be greater than zero");
+        }
+
         OrderItem existent = findItemByProductId(productId);
 
         if (existent != null) {
@@ -47,6 +51,12 @@ public class Order {
             items.add(new OrderItem(null, productId, quantity, price));
         }
         recalculateTotal();
+    }
+
+    public int getTotalQuantity() {
+        return items.stream()
+                .mapToInt(OrderItem::getQuantity)
+                .sum();
     }
 
     public void removeItem(Long productId) {
