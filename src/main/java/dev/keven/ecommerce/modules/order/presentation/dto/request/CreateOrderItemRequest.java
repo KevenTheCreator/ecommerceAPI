@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 public record CreateOrderItemRequest(
         @NotNull Long productId,
-        @NotNull @Positive int quantity,
-        @NotNull @Positive BigDecimal price
+        @NotNull @Positive int quantity
 ) {
 }

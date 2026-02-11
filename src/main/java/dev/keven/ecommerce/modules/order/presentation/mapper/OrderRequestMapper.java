@@ -22,8 +22,7 @@ public class OrderRequestMapper {
     public static CreateOrderItemCommand toItemCommand(CreateOrderItemRequest item){
         return new CreateOrderItemCommand(
                 item.productId(),
-                item.quantity(),
-                item.price()
+                item.quantity()
         );
     }
 
