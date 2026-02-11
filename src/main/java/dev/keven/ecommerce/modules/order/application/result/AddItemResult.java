@@ -5,6 +5,6 @@ import java.math.BigDecimal;
 public record AddItemResult(
         Long orderId,
         BigDecimal totalPrice,
-        int totalItems
+        int totalQuantity
 ) {
 }

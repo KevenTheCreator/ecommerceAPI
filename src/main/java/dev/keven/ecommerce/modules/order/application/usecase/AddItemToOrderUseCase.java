@@ -35,7 +35,7 @@ public class AddItemToOrderUseCase {
         return new AddItemResult(
                 updated.getId(),
                 updated.getTotalPrice(),
-                updated.getItems().size()
+                updated.getTotalQuantity()
         );
     }
 }
