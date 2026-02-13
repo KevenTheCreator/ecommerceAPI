@@ -19,7 +19,7 @@ public record OrderResponseMapper() {
         return new AddItemResponse(
                 result.orderId(),
                 result.totalPrice(),
-                result.totalItems()
+                result.totalQuantity()
         );
     }
 
