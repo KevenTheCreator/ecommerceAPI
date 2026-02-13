@@ -2,10 +2,10 @@ package dev.keven.ecommerce.modules.user.application.usecase;
 
 import dev.keven.ecommerce.common.exception.PasswordValidationException;
 import dev.keven.ecommerce.common.exception.UserNotFoundException;
+import dev.keven.ecommerce.modules.user.application.command.UserLoginCommand;
 import dev.keven.ecommerce.modules.user.domain.User;
 import dev.keven.ecommerce.modules.user.application.gateway.UserGateway;
-import dev.keven.ecommerce.modules.user.presentation.dto.request.UserLoginRequest;
-import dev.keven.ecommerce.modules.user.presentation.dto.response.UserLoginResponse;
+import dev.keven.ecommerce.modules.user.application.result.UserLoginResult;
 import dev.keven.ecommerce.security.auth.AuthService;
 import dev.keven.ecommerce.security.hash.PasswordHashService;
 
@@ -21,17 +21,17 @@ public class UserLoginUseCase {
         this.authService = authService;
     }
 
-    public UserLoginResponse execute(UserLoginRequest request) {
-        User user = userGateway.findByEmail(request.email())
+    public UserLoginResult execute(UserLoginCommand command) {
+        User user = userGateway.findByEmail(command.email())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        if (!passwordHashService.matches(request.password(),  user.getPassword())) {
+        if (!passwordHashService.matches(command.password(), user.getPassword())) {
             throw new PasswordValidationException("Password doesn't match");
         }
 
         String token = authService.generateToken(user);
         String refreshToken = authService.refreshToken(user);
 
-        return new UserLoginResponse(token, refreshToken);
+        return new UserLoginResult(token, refreshToken);
     }
 }
