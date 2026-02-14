@@ -4,18 +4,18 @@ import dev.keven.ecommerce.modules.product.application.usecase.CreateProductUseC
 import dev.keven.ecommerce.modules.product.application.usecase.DeleteProductUseCase;
 import dev.keven.ecommerce.modules.product.application.usecase.GetProductByIdUseCase;
 import dev.keven.ecommerce.modules.product.application.usecase.UpdateProductUseCase;
-import dev.keven.ecommerce.modules.product.domain.Product;
 import dev.keven.ecommerce.modules.product.presentation.dto.request.CreateProductRequest;
 import dev.keven.ecommerce.modules.product.presentation.dto.request.UpdateProductRequest;
 import dev.keven.ecommerce.modules.product.presentation.dto.response.CreateProductResponse;
+import dev.keven.ecommerce.modules.product.presentation.dto.response.GetProductResponse;
 import dev.keven.ecommerce.modules.product.presentation.dto.response.UpdateProductResponse;
+import dev.keven.ecommerce.modules.product.presentation.mapper.ProductRequestMapper;
+import dev.keven.ecommerce.modules.product.presentation.mapper.ProductResponseMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -36,27 +36,36 @@ public class ProductController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<CreateProductResponse> create(@RequestBody @Valid CreateProductRequest request) {
-        CreateProductResponse response = createProductUseCase.execute(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        var result = createProductUseCase.execute(
+                ProductRequestMapper.toCommand(request)
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProductResponseMapper.toResponse(result));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Product>> getProductById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(getProductByIdUseCase.execute(id));
+    public ResponseEntity<GetProductResponse> getProductById(@PathVariable Long id) {
+        var result = getProductByIdUseCase.execute(
+                ProductRequestMapper.toGetByIdCommand(id)
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(ProductResponseMapper.toResponse(result));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
-        deleteProductUseCase.execute(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        deleteProductUseCase.execute(
+                ProductRequestMapper.toDeleteCommand(id)
+        );
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<UpdateProductResponse> update(@PathVariable Long id, @RequestBody @Valid UpdateProductRequest request) {
-        UpdateProductResponse response = updateProductUseCase.execute(id, request);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        var result = updateProductUseCase.execute(
+                ProductRequestMapper.toCommand(id, request)
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(ProductResponseMapper.toResponse(result));
     }
 }

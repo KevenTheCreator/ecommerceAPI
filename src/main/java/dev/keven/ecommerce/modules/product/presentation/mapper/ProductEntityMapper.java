@@ -18,9 +18,9 @@ public class ProductEntityMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
-                .status(ProductStatus.ACTIVE)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .status(product.getStatus() != null ? product.getStatus() : ProductStatus.ACTIVE)
+                .createdAt(product.getCreatedAt() != null ? product.getCreatedAt() : LocalDateTime.now())
+                .updatedAt(product.getUpdatedAt() != null ? product.getUpdatedAt() : LocalDateTime.now())
                 .build();
     }
 
