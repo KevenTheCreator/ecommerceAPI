@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/products/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/cart/**").hasAuthority("CUSTOMER")
                         .requestMatchers("/api/v1/orders/**").hasAuthority("CUSTOMER")
                         .anyRequest().authenticated())
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
