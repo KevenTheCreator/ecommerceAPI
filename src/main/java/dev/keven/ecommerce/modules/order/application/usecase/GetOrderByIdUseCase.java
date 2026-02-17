@@ -14,7 +14,7 @@ public class GetOrderByIdUseCase {
     }
 
     public GetOrderResult execute(GetOrderByIdCommand command) {
-        var order = orderGateway.findById(command.orderId())
+        var order = orderGateway.findByIdAndUserId(command.orderId(), command.userId())
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return GetOrderResult.from(order);
     }

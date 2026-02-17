@@ -15,7 +15,7 @@ public class CancelOrderUseCase {
     }
 
     public CancelOrderResult execute(CancelOrderCommand command) {
-        Order order = orderGateway.findById(command.orderId())
+        Order order = orderGateway.findByIdAndUserId(command.orderId(), command.userId())
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         order.cancel();
