@@ -5,6 +5,7 @@ import dev.keven.ecommerce.modules.order.application.command.CancelOrderCommand;
 import dev.keven.ecommerce.modules.order.application.gateway.OrderGateway;
 import dev.keven.ecommerce.modules.order.application.result.CancelOrderResult;
 import dev.keven.ecommerce.modules.order.domain.Order;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CancelOrderUseCase {
 
@@ -14,6 +15,7 @@ public class CancelOrderUseCase {
         this.orderGateway = orderGateway;
     }
 
+    @Transactional
     public CancelOrderResult execute(CancelOrderCommand command) {
         Order order = orderGateway.findByIdAndUserId(command.orderId(), command.userId())
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
