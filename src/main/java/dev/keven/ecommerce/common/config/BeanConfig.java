@@ -1,5 +1,10 @@
 package dev.keven.ecommerce.common.config;
 
+import dev.keven.ecommerce.modules.cart.application.usecase.AddItemToCartUseCase;
+import dev.keven.ecommerce.modules.cart.application.usecase.CheckoutCartUseCase;
+import dev.keven.ecommerce.modules.cart.application.usecase.GetCartUseCase;
+import dev.keven.ecommerce.modules.cart.application.usecase.RemoveItemFromCartUseCase;
+import dev.keven.ecommerce.modules.cart.application.usecase.UpdateCartItemUseCase;
 import dev.keven.ecommerce.modules.order.application.gateway.OrderGateway;
 import dev.keven.ecommerce.modules.order.application.usecase.*;
 import dev.keven.ecommerce.modules.order.infrastructure.adapter.OrderAdapter;
@@ -76,38 +81,43 @@ public class BeanConfig {
     }
 
     @Bean
-    AddItemToOrderUseCase addItemToOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
-        return new AddItemToOrderUseCase(orderGateway, productGateway);
-    }
-
-    @Bean
     CancelOrderUseCase cancelOrderUseCase(OrderGateway orderGateway) {
         return new CancelOrderUseCase(orderGateway);
     }
 
     @Bean
-    ConfirmOrderUseCase confirmOrderUseCase(OrderGateway orderGateway) {
-        return new ConfirmOrderUseCase(orderGateway);
-    }
-
-    @Bean
-    CreateOrderUseCase createOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
-        return new CreateOrderUseCase(orderGateway, productGateway);
-    }
-
-    @Bean
-    DeleteOrderUseCase deleteOrderUseCase(OrderGateway orderGateway) {
-        return new DeleteOrderUseCase(orderGateway);
-    }
-
-    @Bean
-    RemoveItemFromOrderUseCase removeItemFromOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
-        return new RemoveItemFromOrderUseCase(orderGateway, productGateway);
+    ConfirmOrderUseCase confirmOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new ConfirmOrderUseCase(orderGateway, productGateway);
     }
 
     @Bean
     GetOrderByIdUseCase getOrderByIdUseCase(OrderGateway orderGateway) {
         return new GetOrderByIdUseCase(orderGateway);
+    }
+
+    @Bean
+    GetCartUseCase getCartUseCase(OrderGateway orderGateway) {
+        return new GetCartUseCase(orderGateway);
+    }
+
+    @Bean
+    AddItemToCartUseCase addItemToCartUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new AddItemToCartUseCase(orderGateway, productGateway);
+    }
+
+    @Bean
+    UpdateCartItemUseCase updateCartItemUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new UpdateCartItemUseCase(orderGateway, productGateway);
+    }
+
+    @Bean
+    RemoveItemFromCartUseCase removeItemFromCartUseCase(OrderGateway orderGateway) {
+        return new RemoveItemFromCartUseCase(orderGateway);
+    }
+
+    @Bean
+    CheckoutCartUseCase checkoutCartUseCase(OrderGateway orderGateway, ConfirmOrderUseCase confirmOrderUseCase) {
+        return new CheckoutCartUseCase(orderGateway, confirmOrderUseCase);
     }
 
     @Bean
