@@ -7,6 +7,7 @@ import dev.keven.ecommerce.modules.user.domain.UserRole;
 import dev.keven.ecommerce.modules.user.application.gateway.UserGateway;
 import dev.keven.ecommerce.modules.user.application.result.UserRegisterResult;
 import dev.keven.ecommerce.security.hash.PasswordHashService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class UserRegisterUseCase {
         this.passwordHashService = passwordHashService;
     }
 
+    @Transactional
     public UserRegisterResult execute(UserRegisterCommand command) {
         if (userGateway.findByEmail(command.email()).isPresent()) {
             throw new UserAlreadyExistsException("Email already exists");
