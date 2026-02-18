@@ -5,6 +5,8 @@ import dev.keven.ecommerce.modules.product.application.command.CreateProductComm
 import dev.keven.ecommerce.modules.product.application.gateway.ProductGateway;
 import dev.keven.ecommerce.modules.product.application.result.CreateProductResult;
 import dev.keven.ecommerce.modules.product.domain.Product;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 
 public class CreateProductUseCase {
@@ -15,6 +17,7 @@ public class CreateProductUseCase {
         this.productGateway = productGateway;
     }
 
+    @Transactional
     public CreateProductResult execute(CreateProductCommand command) {
         if (productGateway.existsByName(command.name())) {
             throw new ProductAlreadyExistsException("Product already exists with this name");

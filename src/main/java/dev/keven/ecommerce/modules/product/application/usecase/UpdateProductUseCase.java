@@ -6,6 +6,8 @@ import dev.keven.ecommerce.modules.product.application.command.UpdateProductComm
 import dev.keven.ecommerce.modules.product.application.gateway.ProductGateway;
 import dev.keven.ecommerce.modules.product.application.result.UpdateProductResult;
 import dev.keven.ecommerce.modules.product.domain.Product;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 
 public class UpdateProductUseCase {
@@ -16,6 +18,7 @@ public class UpdateProductUseCase {
         this.productGateway = productGateway;
     }
 
+    @Transactional
     public UpdateProductResult execute(UpdateProductCommand command) {
         var existent = productGateway.findById(command.productId())
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
