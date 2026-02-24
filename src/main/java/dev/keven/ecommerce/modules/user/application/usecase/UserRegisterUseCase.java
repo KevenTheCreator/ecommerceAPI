@@ -34,7 +34,7 @@ public class UserRegisterUseCase {
         user.setLastName(command.lastName());
         user.setEmail(command.email());
         user.setPassword(encodedPassword);
-        user.setRoles(command.roles() == null || command.roles().isEmpty() ? Set.of(UserRole.CUSTOMER) : command.roles());
+        user.setRoles(Set.of(UserRole.CUSTOMER));
 
         userGateway.save(user);
 
