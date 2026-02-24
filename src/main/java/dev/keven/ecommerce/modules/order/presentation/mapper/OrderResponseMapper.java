@@ -2,8 +2,10 @@ package dev.keven.ecommerce.modules.order.presentation.mapper;
 
 import dev.keven.ecommerce.modules.order.application.result.CancelOrderResult;
 import dev.keven.ecommerce.modules.order.application.result.GetOrderResult;
+import dev.keven.ecommerce.modules.order.application.result.GetOrdersResult;
 import dev.keven.ecommerce.modules.order.presentation.dto.response.CancelOrderResponse;
 import dev.keven.ecommerce.modules.order.presentation.dto.response.GetOrderResponse;
+import dev.keven.ecommerce.modules.order.presentation.dto.response.GetOrdersResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,6 +32,25 @@ public record OrderResponseMapper() {
                                 i.subtotal()
                         ))
                         .toList()
+        );
+    }
+
+    public static GetOrdersResponse toResponse(GetOrdersResult result) {
+        return new GetOrdersResponse(
+                result.content().stream()
+                        .map(order -> new GetOrdersResponse.OrderSummaryResponse(
+                                order.orderId(),
+                                order.status(),
+                                order.totalPrice(),
+                                order.createdAt()
+                        ))
+                        .toList(),
+                result.page(),
+                result.size(),
+                result.totalElements(),
+                result.totalPages(),
+                result.first(),
+                result.last()
         );
     }
 }
