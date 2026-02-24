@@ -3,6 +3,7 @@ package dev.keven.ecommerce.security;
 import dev.keven.ecommerce.security.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +32,8 @@ public class SecurityConfig {
                 .sessionManagement(sesh -> sesh.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/products/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/cart/**").hasAuthority("CUSTOMER")
                         .requestMatchers("/api/v1/orders/**").hasAuthority("CUSTOMER")
