@@ -1,16 +1,13 @@
 package dev.keven.ecommerce.modules.user.presentation.dto.request;
 
-import dev.keven.ecommerce.modules.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.util.Set;
 
 public record UserRegisterRequest(
        @NotBlank String firstName,
        @NotBlank String lastName,
        @NotBlank @Email String email,
-       @NotBlank @Size(min = 8, max = 32) String password,
-        Set<UserRole> roles
+       @NotBlank @Size(min = 8, max = 32) String password
 ) {
 }
