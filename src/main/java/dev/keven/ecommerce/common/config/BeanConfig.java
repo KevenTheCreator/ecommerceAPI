@@ -14,11 +14,15 @@ import dev.keven.ecommerce.modules.product.application.gateway.ProductGateway;
 import dev.keven.ecommerce.modules.product.application.usecase.CreateProductUseCase;
 import dev.keven.ecommerce.modules.product.application.usecase.DeleteProductUseCase;
 import dev.keven.ecommerce.modules.product.application.usecase.GetProductByIdUseCase;
+import dev.keven.ecommerce.modules.product.application.usecase.ListProductsUseCase;
 import dev.keven.ecommerce.modules.product.application.usecase.UpdateProductUseCase;
 import dev.keven.ecommerce.modules.product.infrastructure.adapter.ProductAdapter;
 import dev.keven.ecommerce.modules.product.infrastructure.persistence.repository.ProductRepository;
 import dev.keven.ecommerce.modules.product.presentation.mapper.ProductEntityMapper;
+import dev.keven.ecommerce.modules.user.application.usecase.GetUserByIdUseCase;
+import dev.keven.ecommerce.modules.user.application.usecase.GetUsersUseCase;
 import dev.keven.ecommerce.modules.user.application.usecase.RefreshTokenUseCase;
+import dev.keven.ecommerce.modules.user.application.usecase.UpdateUserRolesUseCase;
 import dev.keven.ecommerce.modules.user.application.usecase.UserLoginUseCase;
 import dev.keven.ecommerce.modules.user.application.usecase.UserRegisterUseCase;
 import dev.keven.ecommerce.modules.user.application.gateway.UserGateway;
@@ -66,6 +70,11 @@ public class BeanConfig {
     }
 
     @Bean
+    ListProductsUseCase listProductsUseCase(ProductGateway productGateway) {
+        return new ListProductsUseCase(productGateway);
+    }
+
+    @Bean
     ProductGateway productGateway(ProductRepository repository, ProductEntityMapper entityMapper) {
         return new ProductAdapter(repository, entityMapper);
     }
@@ -93,6 +102,11 @@ public class BeanConfig {
     @Bean
     GetOrderByIdUseCase getOrderByIdUseCase(OrderGateway orderGateway) {
         return new GetOrderByIdUseCase(orderGateway);
+    }
+
+    @Bean
+    GetOrdersUseCase getOrdersUseCase(OrderGateway orderGateway) {
+        return new GetOrdersUseCase(orderGateway);
     }
 
     @Bean
@@ -128,5 +142,20 @@ public class BeanConfig {
     @Bean
     RefreshTokenUseCase refreshTokenUseCase(UserGateway userGateway, JwtProvider jwtProvider) {
         return new RefreshTokenUseCase(userGateway, jwtProvider);
+    }
+
+    @Bean
+    GetUsersUseCase getUsersUseCase(UserGateway userGateway) {
+        return new GetUsersUseCase(userGateway);
+    }
+
+    @Bean
+    GetUserByIdUseCase getUserByIdUseCase(UserGateway userGateway) {
+        return new GetUserByIdUseCase(userGateway);
+    }
+
+    @Bean
+    UpdateUserRolesUseCase updateUserRolesUseCase(UserGateway userGateway) {
+        return new UpdateUserRolesUseCase(userGateway);
     }
 }
