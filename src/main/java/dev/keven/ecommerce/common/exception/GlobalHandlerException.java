@@ -3,7 +3,6 @@ package dev.keven.ecommerce.common.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -71,6 +70,12 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleOrderNotFound(OrderNotFoundException e) {
+        ErrorResponse response = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(response.status).body(response);
+    }
+
+    @ExceptionHandler(CartItemNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCartItemNotFound(CartItemNotFoundException e) {
         ErrorResponse response = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
         return ResponseEntity.status(response.status).body(response);
     }
