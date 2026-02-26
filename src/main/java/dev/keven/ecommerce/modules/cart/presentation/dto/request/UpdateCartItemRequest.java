@@ -1,9 +1,9 @@
 package dev.keven.ecommerce.modules.cart.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public record UpdateCartItemRequest(
-        @NotNull @Positive int quantity
+        @NotNull @PositiveOrZero int quantity
 ) {
 }

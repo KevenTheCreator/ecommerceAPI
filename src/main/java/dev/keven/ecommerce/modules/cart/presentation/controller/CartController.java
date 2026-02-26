@@ -70,12 +70,12 @@ public class CartController {
     }
 
     @DeleteMapping("/items/{productId}")
-    public ResponseEntity<CartResponse> removeItem(@PathVariable Long productId) {
+    public ResponseEntity<Void> removeItem(@PathVariable Long productId) {
         Long authenticatedUserId = authenticatedUserService.getAuthenticatedUserId();
-        var result = removeItemFromCartUseCase.execute(
+        removeItemFromCartUseCase.execute(
                 CartRequestMapper.toRemoveItemCommand(authenticatedUserId, productId)
         );
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(CartResponseMapper.toResponse(result));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/checkout")
