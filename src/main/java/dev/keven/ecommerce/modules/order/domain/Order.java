@@ -1,5 +1,6 @@
 package dev.keven.ecommerce.modules.order.domain;
 
+import dev.keven.ecommerce.common.exception.CartItemNotFoundException;
 import dev.keven.ecommerce.common.exception.OrderInvalidStatusException;
 import dev.keven.ecommerce.common.exception.UserNullException;
 
@@ -61,7 +62,32 @@ public class Order {
 
     public void removeItem(Long productId) {
         ensureEditable();
-        items.removeIf(item -> item.getProductId().equals(productId));
+        boolean removed = items.removeIf(item -> item.getProductId().equals(productId));
+        if (!removed) {
+            throw new CartItemNotFoundException("item not found in order");
+        }
+        recalculateTotal();
+    }
+
+    public void updateItemQuantity(Long productId, int quantity, BigDecimal price) {
+        ensureEditable();
+
+        if (quantity < 0) {
+            throw new IllegalArgumentException("quantity cannot be negative");
+        }
+
+        OrderItem existent = findItemByProductId(productId);
+        if (existent == null) {
+            throw new CartItemNotFoundException("item not found in order");
+        }
+
+        if (quantity == 0) {
+            items.removeIf(item -> item.getProductId().equals(productId));
+            recalculateTotal();
+            return;
+        }
+
+        existent.updateQuantityAndPrice(quantity, price);
         recalculateTotal();
     }
 

@@ -26,6 +26,13 @@ public class OrderItem {
         this.quantity += amount;
     }
 
+    public void updateQuantityAndPrice(int quantity, BigDecimal price) {
+        if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than 0");
+        if (price.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("price cannot be negative");
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public Long getId() {
         return id;
     }
