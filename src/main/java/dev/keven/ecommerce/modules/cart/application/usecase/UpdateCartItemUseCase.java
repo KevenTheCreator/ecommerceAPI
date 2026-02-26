@@ -27,6 +27,16 @@ public class UpdateCartItemUseCase {
         Order cart = orderGateway.findByUserIdAndStatus(command.userId(), OrderStatus.CREATED)
                 .orElseThrow(() -> new OrderNotFoundException("active cart not found"));
 
+        if (command.quantity() < 0) {
+            throw new IllegalArgumentException("quantity cannot be negative");
+        }
+
+        if (command.quantity() == 0) {
+            cart.removeItem(command.productId());
+            Order saved = orderGateway.save(cart);
+            return CartResult.from(saved);
+        }
+
         Product product = productGateway.findById(command.productId())
                 .orElseThrow(() -> new ProductNotFoundException("product not found"));
 
@@ -38,8 +48,7 @@ public class UpdateCartItemUseCase {
             throw new IllegalArgumentException("insufficient stock");
         }
 
-        cart.removeItem(command.productId());
-        cart.addItem(command.productId(), command.quantity(), product.getPrice());
+        cart.updateItemQuantity(command.productId(), command.quantity(), product.getPrice());
 
         Order saved = orderGateway.save(cart);
         return CartResult.from(saved);
