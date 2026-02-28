@@ -20,7 +20,9 @@ public class CartResponseMapper {
                                 item.productId(),
                                 item.quantity(),
                                 item.unitPrice().toString(),
-                                item.subtotal().toString()
+                                item.subtotal().toString(),
+                                item.available(),
+                                item.unavailableReason()
                         )
                 ).toList()
         );

@@ -13,7 +13,9 @@ public record CartResponse(
             Long productId,
             int quantity,
             String unitPrice,
-            String subtotal
+            String subtotal,
+            boolean available,
+            String unavailableReason
     ) {
     }
 }
