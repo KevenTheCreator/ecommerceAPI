@@ -110,8 +110,8 @@ public class BeanConfig {
     }
 
     @Bean
-    GetCartUseCase getCartUseCase(OrderGateway orderGateway) {
-        return new GetCartUseCase(orderGateway);
+    GetCartUseCase getCartUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+        return new GetCartUseCase(orderGateway, productGateway);
     }
 
     @Bean
@@ -130,8 +130,12 @@ public class BeanConfig {
     }
 
     @Bean
-    CheckoutCartUseCase checkoutCartUseCase(OrderGateway orderGateway, ConfirmOrderUseCase confirmOrderUseCase) {
-        return new CheckoutCartUseCase(orderGateway, confirmOrderUseCase);
+    CheckoutCartUseCase checkoutCartUseCase(
+            OrderGateway orderGateway,
+            ConfirmOrderUseCase confirmOrderUseCase,
+            ProductGateway productGateway
+    ) {
+        return new CheckoutCartUseCase(orderGateway, confirmOrderUseCase, productGateway);
     }
 
     @Bean
